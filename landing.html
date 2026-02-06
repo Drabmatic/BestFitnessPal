@@ -1,0 +1,574 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="BestFitnessPal helps you track calories, macros, and progress with a clean daily workflow.">
+  <title>BestFitnessPal | Calorie & Macro Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f8f3e9;
+      --surface: #fffdf8;
+      --ink: #1f3323;
+      --muted: #47624b;
+      --brand: #1b5e20;
+      --brand-soft: #d4ebd2;
+      --accent: #f5b867;
+      --accent-soft: #fde6c5;
+      --line: #d9e3d3;
+      --max: 1100px;
+      --radius-lg: 24px;
+      --radius-md: 16px;
+      --shadow: 0 14px 40px rgba(35, 63, 40, 0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Manrope", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(1100px 500px at 10% -10%, #dbeed9 0%, transparent 50%),
+        radial-gradient(700px 400px at 90% 0%, #ffe7c7 0%, transparent 58%),
+        var(--bg);
+      line-height: 1.55;
+    }
+
+    .container {
+      width: min(92%, var(--max));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(248, 243, 233, 0.88);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(31, 51, 35, 0.08);
+    }
+
+    .topbar .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 66px;
+      gap: 14px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--ink);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-dot {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: linear-gradient(145deg, #2a7a31, #1b5e20);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--ink);
+      font-weight: 600;
+      font-size: 0.95rem;
+      opacity: 0.9;
+    }
+
+    nav a:hover,
+    nav a:focus-visible {
+      opacity: 1;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      padding: 0.72rem 1.08rem;
+      font-weight: 700;
+      text-decoration: none;
+      border: 1px solid transparent;
+      transition: transform 140ms ease, box-shadow 140ms ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background: var(--brand);
+      color: #fff;
+      box-shadow: 0 8px 18px rgba(27, 94, 32, 0.25);
+    }
+
+    .btn-secondary {
+      background: #fff;
+      color: var(--ink);
+      border-color: rgba(31, 51, 35, 0.2);
+    }
+
+    .hero {
+      padding: 70px 0 42px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 26px;
+      align-items: stretch;
+    }
+
+    h1,
+    h2,
+    h3 {
+      font-family: "Fraunces", serif;
+      letter-spacing: -0.01em;
+      margin: 0 0 10px;
+      line-height: 1.15;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 5vw, 3.45rem);
+    }
+
+    h2 {
+      font-size: clamp(1.5rem, 3.2vw, 2.25rem);
+    }
+
+    .hero-copy p {
+      margin: 0;
+      color: var(--muted);
+      max-width: 58ch;
+      font-size: 1.05rem;
+    }
+
+    .hero-badges {
+      margin: 20px 0 24px;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .hero-badges li {
+      background: #fff;
+      border: 1px solid rgba(31, 51, 35, 0.14);
+      border-radius: 999px;
+      padding: 0.4rem 0.8rem;
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .hero-panel {
+      background: linear-gradient(165deg, var(--surface), #f2fbef);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      box-shadow: var(--shadow);
+      display: grid;
+      gap: 12px;
+      align-content: center;
+    }
+
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .stat {
+      border-radius: 14px;
+      background: #fff;
+      border: 1px solid rgba(31, 51, 35, 0.1);
+      padding: 12px;
+    }
+
+    .stat strong {
+      font-size: 1.2rem;
+      line-height: 1;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 0.87rem;
+      font-weight: 600;
+    }
+
+    .mini-list {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    section {
+      padding: 34px 0;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(31, 51, 35, 0.12);
+      padding: 18px;
+      box-shadow: 0 8px 20px rgba(24, 40, 28, 0.06);
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .policy-wrap {
+      background: #fff;
+      border: 1px solid rgba(31, 51, 35, 0.14);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      padding: clamp(18px, 3vw, 34px);
+    }
+
+    .policy-meta {
+      margin: 0 0 16px;
+      color: var(--muted);
+      font-size: 0.95rem;
+      font-weight: 600;
+      background: linear-gradient(90deg, var(--brand-soft), var(--accent-soft));
+      display: inline-block;
+      padding: 0.45rem 0.72rem;
+      border-radius: 999px;
+    }
+
+    .policy {
+      display: grid;
+      gap: 16px;
+      max-width: 85ch;
+    }
+
+    .policy h3 {
+      font-size: 1.25rem;
+      margin-bottom: 6px;
+    }
+
+    .policy p,
+    .policy li {
+      margin: 0;
+      color: #33523a;
+    }
+
+    .policy ul {
+      margin: 8px 0 0;
+      padding-left: 20px;
+    }
+
+    .notice {
+      margin-top: 16px;
+      border-left: 4px solid #2d7a34;
+      background: #f2fbef;
+      padding: 12px 14px;
+      border-radius: 10px;
+      color: #234729;
+      font-weight: 600;
+    }
+
+    footer {
+      padding: 30px 0 48px;
+      color: #3f5a46;
+      font-size: 0.92rem;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 420ms ease, transform 420ms ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .cards {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 640px) {
+      nav {
+        gap: 10px;
+      }
+
+      nav a {
+        font-size: 0.9rem;
+      }
+
+      .cards {
+        grid-template-columns: 1fr;
+      }
+
+      .stat-row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="container">
+      <a class="brand" href="#top">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span>BestFitnessPal</span>
+      </a>
+      <nav aria-label="Primary">
+        <a href="#features">Features</a>
+        <a href="#privacy">Privacy Policy</a>
+        <a href="#contact">Contact</a>
+        <a class="btn btn-primary" href="#" aria-label="Get BestFitnessPal on Google Play">Get the App</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-copy reveal">
+          <h1>Track calories and macros without the clutter.</h1>
+          <p>
+            BestFitnessPal is a simple, fast nutrition tracker for daily logging, progress insights,
+            and goal-based calorie planning built around the way real people eat.
+          </p>
+          <ul class="hero-badges" aria-label="Key highlights">
+            <li>Android 8.0+ support</li>
+            <li>Offline-first local storage</li>
+            <li>70+ starter foods included</li>
+            <li>Premium analytics + CSV export</li>
+          </ul>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#">Download on Google Play</a>
+            <a class="btn btn-secondary" href="#privacy">Read Privacy Policy</a>
+          </div>
+        </div>
+
+        <aside class="hero-panel reveal" aria-label="App highlights">
+          <h2>Your day at a glance</h2>
+          <div class="stat-row">
+            <div class="stat">
+              <strong>2,100</strong>
+              <span>Goal kcal</span>
+            </div>
+            <div class="stat">
+              <strong>1,640</strong>
+              <span>Eaten</span>
+            </div>
+            <div class="stat">
+              <strong>460</strong>
+              <span>Remaining</span>
+            </div>
+          </div>
+          <ul class="mini-list">
+            <li>Log meals by search, quick add, or custom foods.</li>
+            <li>Track weight trends and calorie adherence over time.</li>
+            <li>Adjust unit system and nutrition goals anytime.</li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+
+    <section id="features" aria-labelledby="features-title">
+      <div class="container">
+        <h2 id="features-title" class="reveal">What you can do</h2>
+        <div class="cards">
+          <article class="card reveal">
+            <h3>Smart onboarding</h3>
+            <p>Set goal, activity, and profile once. Your calorie and macro targets are calculated instantly.</p>
+          </article>
+          <article class="card reveal">
+            <h3>Food logging</h3>
+            <p>Search seed foods, save favorites, and add custom items to keep daily tracking quick.</p>
+          </article>
+          <article class="card reveal">
+            <h3>Progress charts</h3>
+            <p>See weight trend and macro averages by week or month to understand what is working.</p>
+          </article>
+          <article class="card reveal">
+            <h3>Premium tools</h3>
+            <p>Unlock CSV export and advanced insights with monthly or annual subscription options.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="privacy" aria-labelledby="privacy-title">
+      <div class="container">
+        <div class="policy-wrap reveal">
+          <h2 id="privacy-title">Privacy Policy</h2>
+          <p class="policy-meta">Last updated: February 6, 2026</p>
+
+          <div class="policy">
+            <div>
+              <h3>1. Overview</h3>
+              <p>
+                This Privacy Policy explains how BestFitnessPal ("we", "our", "us") collects, uses, and protects
+                information when you use the BestFitnessPal Android app.
+              </p>
+            </div>
+
+            <div>
+              <h3>2. Information We Collect</h3>
+              <ul>
+                <li><strong>Data you enter:</strong> profile details (age, biological sex, height, weight, activity level), nutrition goals, food logs, weight logs, and custom foods.</li>
+                <li><strong>Subscription data:</strong> subscription status and plan information returned by Google Play Billing.</li>
+                <li><strong>App analytics and diagnostics:</strong> usage events and crash diagnostics through Firebase Analytics and Firebase Crashlytics.</li>
+              </ul>
+            </div>
+
+            <div>
+              <h3>3. How We Use Information</h3>
+              <ul>
+                <li>Provide core app functionality (calorie and macro tracking, summaries, and progress views).</li>
+                <li>Calculate personalized goals from your profile and selected fitness objective.</li>
+                <li>Maintain premium feature access and restore subscription entitlements.</li>
+                <li>Monitor app performance, troubleshoot crashes, and improve product quality.</li>
+              </ul>
+            </div>
+
+            <div>
+              <h3>4. Storage and Processing</h3>
+              <ul>
+                <li>Most nutrition and profile data is stored locally on your device (Room database + DataStore).</li>
+                <li>Analytics and crash information may be processed by Google Firebase.</li>
+                <li>Payment processing is handled by Google Play; we do not store your full payment card details.</li>
+              </ul>
+            </div>
+
+            <div>
+              <h3>5. Sharing</h3>
+              <p>
+                We do not sell your personal information. Data is shared only with service providers needed to run the app,
+                including Google Firebase (analytics/crash reporting) and Google Play Billing (subscriptions).
+              </p>
+            </div>
+
+            <div>
+              <h3>6. Your Choices</h3>
+              <ul>
+                <li>You can edit or remove logged data directly in the app.</li>
+                <li>You can export food and weight logs to CSV (premium feature).</li>
+                <li>You can uninstall the app to remove locally stored app data from your device.</li>
+                <li>You can manage or cancel subscriptions in your Google Play account settings.</li>
+              </ul>
+            </div>
+
+            <div>
+              <h3>7. Children's Privacy</h3>
+              <p>
+                BestFitnessPal is not directed to children under 13, and we do not knowingly collect personal data from children under 13.
+              </p>
+            </div>
+
+            <div>
+              <h3>8. Security</h3>
+              <p>
+                We use reasonable technical and organizational safeguards, but no method of transmission or storage is completely secure.
+              </p>
+            </div>
+
+            <div>
+              <h3>9. Changes to This Policy</h3>
+              <p>
+                We may update this policy periodically. Material updates will be reflected by revising the "Last updated" date above.
+              </p>
+            </div>
+
+            <div id="contact">
+              <h3>10. Contact</h3>
+              <p>
+                For privacy questions, contact: <a href="mailto:support@bestfitnesspal.app">support@bestfitnesspal.app</a>
+              </p>
+            </div>
+          </div>
+
+          <p class="notice">
+            Note: Replace the support email and any company/legal details with your official public contact before publishing.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <strong>BestFitnessPal</strong>
+      <p>Simple, smart nutrition tracking for everyday progress.</p>
+      <p>&copy; <span id="year"></span> BestFitnessPal. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    const observers = document.querySelectorAll(".reveal");
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.16 });
+
+    observers.forEach((el, index) => {
+      el.style.transitionDelay = `${index * 40}ms`;
+      io.observe(el);
+    });
+  </script>
+</body>
+</html>
